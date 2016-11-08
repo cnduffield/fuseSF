@@ -1,47 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Configures the Camel Context -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
-	xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
-
-	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>classpath:salesforceconfig.properties</value>
-		</property>
-	</bean>
-	<bean id="salesforce"
-		class="org.apache.camel.component.salesforce.SalesforceComponent">
-
-		<property name="loginConfig">
-			<bean class="org.apache.camel.component.salesforce.SalesforceLoginConfig">
-				<property name="loginUrl" value="${loginUrl}"></property>
-				<property name="userName" value="${userName}"></property>
-				<property name="password" value="${password}"></property>
-				<property name="clientId" value="${clientId}"></property>
-				<property name="clientSecret" value="${clientSecret}"></property>
-			</bean>
-		</property>
-		<property name="config">
-			<bean
-				class="org.apache.camel.component.salesforce.SalesforceEndpointConfig">
-				<property name="sObjectName" value="${sObjectName}"></property>
-				<property name="sObjectClass" value="${sObjectClass}"></property>
-			</bean>
-		</property>
-		<property name="packages" value="${sObjectDTOPackages}"></property>
-	</bean>
-
-	<camelContext xmlns="http://camel.apache.org/schema/spring">
-    <route id="sfRoute">
-        <from uri="timer://foo?repeatCount=1"/>
-        <to uri="salesforce:getSObjectWithId?sObjectName=Account&amp;sObjectIdName=JBoss_Fuse_Integration_External_ID__c&amp;sObjectIdValue=12345"/>
-        <convertBodyTo type="java.lang.String"/>
-        <log message="Query result back from Salesforce: ${body}"/>
-    </route>
-</camelContext>
-
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="bean-9e13f2a6-e53b-46fc-8893-2806e3144a5f">
+        <property name="location">
+            <value>classpath:salesforceconfig.properties</value>
+        </property>
+    </bean>
+    <bean
+        class="org.apache.camel.component.salesforce.SalesforceComponent" id="salesforce">
+        <property name="loginConfig">
+            <bean class="org.apache.camel.component.salesforce.SalesforceLoginConfig">
+                <property name="loginUrl" value="${loginUrl}"/>
+                <property name="userName" value="${userName}"/>
+                <property name="password" value="${password}"/>
+                <property name="clientId" value="${clientId}"/>
+                <property name="clientSecret" value="${clientSecret}"/>
+            </bean>
+        </property>
+        <property name="config">
+            <bean class="org.apache.camel.component.salesforce.SalesforceEndpointConfig">
+                <property name="sObjectName" value="${sObjectName}"/>
+                <property name="sObjectClass" value="${sObjectClass}"/>
+            </bean>
+        </property>
+        <property name="packages" value="${sObjectDTOPackages}"/>
+    </bean>
+    <camelContext id="camelContext-b8bca835-678f-4c1c-8dbd-bfdf5340886c" xmlns="http://camel.apache.org/schema/spring">
+        <route id="sfRoute">
+            <from id="_to2" uri="cxfrs:beanId:18080"/>
+            <to id="_to1" uri="salesforce:getSObjectWithId?sObjectName=Account&amp;sObjectIdName=JBoss_Fuse_Integration_External_ID__c&amp;sObjectIdValue=12345"/>
+            <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
+            <log id="_log1" message="Query result back from Salesforce: ${body}"/>
+        </route>
+    </camelContext>
 </beans>
